@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renewable Energy Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Panel */
+        .nav-panel {
+            width: 250px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .nav-panel h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1a2a6c;
+            font-size: 1.5rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #fdbb2d;
+        }
+
+        .nav-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: #444;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            color: #1a2a6c;
+        }
+
+        .nav-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+            border-left: 4px solid #fdbb2d;
+        }
+
+        .nav-item.active {
+            background: #1a2a6c;
+            color: white;
+        }
+
+        .nav-item.active i {
+            color: #fdbb2d;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.95);
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1a2a6c;
+        }
+
+        .section-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid #fdbb2d;
+        }
+
+        .content-card h2 {
+            color: #1a2a6c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .content-card h2 i {
+            margin-right: 10px;
+            color: #fdbb2d;
+        }
+
+        .diagram-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .diagram {
+            width: 100%;
+            min-width: 600px;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .diagram-box {
+            display: inline-block;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            min-width: 180px;
+            vertical-align: top;
+        }
+
+        .diagram-arrow {
+            font-size: 1.5rem;
+            margin: 0 10px;
+            color: #1a2a6c;
+        }
+
+        .diagram-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .explanation {
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .explanation p {
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            background: #fff9db;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        /* Landing Page Styles */
+        .landing-container {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .profile-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #1a2a6c, #fdbb2d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .student-details {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid #1a2a6c;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #1a2a6c;
+            text-align: left;
+            flex: 1;
+        }
+
+        .detail-value {
+            text-align: right;
+            flex: 1;
+            color: #333;
+        }
+
+        .welcome-message {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            margin: 30px 0;
+            color: #555;
+        }
+
+        .project-overview {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 30%;
+            min-width: 200px;
+            margin: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+            border-top: 4px solid #fdbb2d;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .project-card h3 {
+            color: #1a2a6c;
+            margin-bottom: 10px;
+        }
+
+        .project-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Problem Statement Styles */
+        .problem-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .problem-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #1a2a6c;
+        }
+
+        .problem-card h3 {
+            color: #1a2a6c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .problem-card h3 i {
+            margin-right: 10px;
+            color: #fdbb2d;
+        }
+
+        .requirements-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .requirements-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .requirements-list li:last-child {
+            border-bottom: none;
+        }
+
+        .requirements-list li i {
+            color: #fdbb2d;
+            margin-right: 12px;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .requirement-text {
+            flex: 1;
+        }
+
+        /* Activity Problem Statement */
+        .activity-problem {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 5px solid #1a2a6c;
+        }
+
+        .activity-problem h3 {
+            color: #1a2a6c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .activity-problem h3 i {
+            margin-right: 10px;
+            color: #fdbb2d;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .nav-panel {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .nav-items {
+                display: flex;
+                overflow-x: auto;
+            }
+            
+            .nav-item {
+                min-width: 150px;
+                margin: 5px;
+            }
+            
+            .main-content {
+                margin: 10px;
+                padding: 20px;
+            }
+
+            .project-card {
+                width: 45%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .section-header h1 {
+                font-size: 2rem;
+            }
+            
+            .content-card {
+                padding: 15px;
+            }
+            
+            .diagram-box {
+                min-width: 140px;
+                padding: 10px;
+            }
+
+            .project-card {
+                width: 100%;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .detail-label, .detail-value {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Panel -->
+    <div class="nav-panel">
+        <h2><i class="fas fa-leaf"></i> Renewable Energy Project</h2>
+        <div class="nav-items">
+            <div class="nav-item active" data-target="home">
+                <i class="fas fa-home"></i> Home
+            </div>
+            <div class="nav-item" data-target="activity1">
+                <i class="fas fa-water"></i> Activity 1: Tidal Power
+            </div>
+            <div class="nav-item" data-target="activity2">
+                <i class="fas fa-sun"></i> Activity 2: Biomass
+            </div>
+            <div class="nav-item" data-target="activity3">
+                <i class="fas fa-thermometer-half"></i> Activity 3: OTEC System
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Home/Landing Page -->
+        <section id="home" class="section active">
+            <div class="section-header">
+                <h1>Clean and Green Energy Projects</h1>
+                <p>Exploring sustainable energy solutions for a better future</p>
+            </div>
+            
+            <div class="landing-container">
+                <div class="profile-image">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                
+                <div class="student-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Name:</div>
+                        <div class="detail-value">Dakshina Prasath M</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Registration No:</div>
+                        <div class="detail-value">RA2311026010053</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Section:</div>
+                        <div class="detail-value">AB1</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year:</div>
+                        <div class="detail-value">3rd Year</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Department:</div>
+                        <div class="detail-value">CINTEL</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Subject:</div>
+                        <div class="detail-value">Clean and Green Energy (21EEO307T)</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Faculty:</div>
+                        <div class="detail-value">Dr. J Divya Navamani (100310)</div>
+                    </div>
+                </div>
+                
+                <div class="welcome-message">
+                    <p>Welcome to my renewable energy portfolio! This website showcases three innovative clean energy projects that demonstrate sustainable solutions for power generation. Each project explores different aspects of renewable energy technology and its real-world applications.</p>
+                    <p>Navigate through the projects using the menu on the left to explore detailed system architectures and explanations.</p>
+                </div>
+                
+                <div class="project-overview">
+                    <div class="project-card">
+                        <h3><i class="fas fa-water"></i> Tidal Power</h3>
+                        <p>Harnessing ocean tidal energy for coastal communities with predictable, sustainable electricity generation.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3><i class="fas fa-sun"></i> Biomass</h3>
+                        <p>Integrating solar, wind, and biomass for reliable energy independence in remote areas.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3><i class="fas fa-thermometer-half"></i> OTEC System</h3>
+                        <p>Utilizing ocean temperature gradients for simultaneous electricity and freshwater production.</p>
+                    </div>
+                </div>
+
+                <!-- Problem Statements on Home Page -->
+                <div class="problem-container">
+                    <div class="problem-card">
+                        <h3><i class="fas fa-clipboard-list"></i> Problem Statement 1: Tidal Power Plant</h3>
+                        <p>Prepare the architecture of a tidal power plant suitable for a coastal village.</p>
+                        <ul class="requirements-list">
+                        </ul>
+                    </div>
+
+                    <div class="problem-card">
+                        <h3><i class="fas fa-clipboard-list"></i> Problem Statement 2: Biomass</h3>
+                        <p>Propose the block diagram of a microgrid integrating solar PV, wind, and biomass for a remote community.</p>
+                        <ul class="requirements-list">
+                            
+                        </ul>
+                    </div>
+
+                    <div class="problem-card">
+                        <h3><i class="fas fa-clipboard-list"></i> Problem Statement 3: OTEC System</h3>
+                        <p>Develop the block diagram of an Ocean Thermal Energy Conversion (OTEC) system for electricity production and freshwater generation.</p>
+                        <ul class="requirements-list">
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activity 1: Tidal Power -->
+        <section id="activity1" class="section">
+            <div class="section-header">
+                <h1>Tidal Power Plant</h1>
+                <p>Harnessing the power of ocean tides for coastal communities</p>
+            </div>
+            
+            <!-- Problem Statement for Activity 1 -->
+            <div class="activity-problem">
+                <h3><i class="fas fa-clipboard-list"></i> Problem Statement</h3>
+                <p>Prepare the architecture of a tidal power plant suitable for a coastal village. The solution should include a block diagram and detailed explanation covering the source of energy, conversion process, output/utilization, and real-world application relevance.</p>
+            </div>
+            
+            <div class="content-card">
+                <h2><i class="fas fa-project-diagram"></i> System Architecture</h2>
+                <div class="diagram-container">
+                    <div class="diagram">
+                        <div class="diagram-row">
+                            <div class="diagram-box" style="background: #cde4ff;">
+                                <div>Ocean Tides</div>
+                                <div>(Energy Source)</div>
+                            </div>
+                            <div class="diagram-arrow">→</div>
+                            <div class="diagram-box" style="background: #fff4cd;">
+                                <div>Tidal Basin</div>
+                                <div>& Barrage</div>
+                            </div>
+                            <div class="diagram-arrow">→</div>
+                            <div class="diagram-box" style="background: #d4f7d4;">
+                                <div>Tidal Turbines</div>
+                                <div>& Generators</div>
+                            </div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-box" style="background: #ffd4d4;">
+                                <div>Power Station</div>
+                                <div>& Control System</div>
+                            </div>
+                            <div class="diagram-arrow">→</div>
+                            <div class="diagram-box" style="background: #e6d4ff;">
+                                <div>Local Village</div>
+                                <div>Micro-Grid</div>
+                            </div>
+                            <div class="diagram-arrow">→</div>
+                            <div class="diagram-box" style="background: #d4f7f7;">
+                                <div>Utilization</div>
+                                <div>(Homes, Lighting, Desalination)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2><i class="fas fa-file-alt"></i> Explanation</h2>
+                <div class="explanation">
+                    <p><span class="highlight">Source of energy:</span> The system harnesses the gravitational energy from the moon and sun that creates predictable tidal movements. A tidal barrage or basin captures water during high tide, creating a height difference that stores potential energy. This natural phenomenon occurs twice daily with remarkable consistency, providing a reliable and predictable energy source that far exceeds the intermittency issues of solar or wind power. The energy potential is directly related to the tidal range, which can vary significantly based on geographical location, with some coastal areas experiencing ranges of over 10 meters.</p>
+                    
+                    <p><span class="highlight">Conversion process:</span> As tides shift, water flows through the barrage gates, driving specially designed tidal turbines. These underwater turbines, which can be horizontal-axis, vertical-axis, or oscillating hydrofoil designs, convert the kinetic energy of moving water into mechanical energy. This mechanical energy then spins generators to produce electricity. The conversion efficiency depends on turbine design and placement, with modern turbines achieving efficiencies of 40-50%. The bidirectional flow of tides allows for power generation during both incoming and outgoing tides, maximizing energy capture throughout the tidal cycle.</p>
+                    
+                    <p><span class="highlight">Output/utilization:</span> The generated AC power is conditioned, transformed to appropriate voltages, and distributed through a local micro-grid. This provides clean electricity for domestic use, community lighting, small-scale industries, and commercial establishments. A particularly valuable byproduct is freshwater from an integrated desalination unit, which uses either reverse osmosis or multi-stage flash distillation powered by the tidal energy. This addresses the critical need for potable water in coastal communities. Additionally, the predictable nature of tidal energy allows for precise grid management and reliable power supply scheduling.</p>
+                    
+                    <p><span class="highlight">Real-world application relevance:</span> Tidal power offers predictable, sustainable energy for remote coastal villages, significantly reducing dependence on expensive and polluting diesel generators. The La Rance Tidal Power Station in France, operational since 1966, demonstrates this technology's long-term viability with an installed capacity of 240 MW. For community-scale implementation, smaller modular systems with capacities of 1-10 MW are increasingly feasible. Recent developments in turbine technology have reduced environmental impacts on marine ecosystems while improving efficiency. Tidal energy projects create local employment opportunities and can be integrated with other marine activities like aquaculture, enhancing economic benefits for coastal communities while providing a consistent renewable energy source unaffected by weather conditions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activity 2: Hybrid Microgrid -->
+        <section id="activity2" class="section">
+            <div class="section-header">
+                <h1>Hybrid Renewable Microgrid</h1>
+                <p>Integrating solar, wind, and biomass for remote community energy independence</p>
+            </div>
+            
+            <!-- Problem Statement for Activity 2 -->
+            <div class="activity-problem">
+                <h3><i class="fas fa-clipboard-list"></i> Problem Statement</h3>
+                <p>Propose the block diagram of a microgrid integrating solar PV, wind, and biomass for a remote community. The solution should include a block diagram and detailed explanation covering the source of energy, conversion process, output/utilization, and real-world application relevance.</p>
+            </div>
+            
+            <div class="content-card">
+                <h2><i class="fas fa-project-diagram"></i> System Architecture</h2>
+                <div class="diagram-container">
+                    <div class="diagram">
+                        <div class="diagram-row">
+                            <div class="diagram-box" style="background: #cde4ff;">
+                                <div>Solar PV Array</div>
+                            </div>
+                            <div class="diagram-box" style="background: #cde4ff;">
+                                <div>Wind Turbine</div>
+                            </div>
+                            <div class="diagram-box" style="background: #cde4ff;">
+                                <div>Biomass Plant</div>
+                            </div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-arrow">↓</div>
+                            <div class="diagram-arrow">↓</div>
+                            <div class="diagram-arrow">↓</div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-box" style="background: #fff4cd;">
+                                <div>Charge Controllers</div>
+                            </div>
+                            <div class="diagram-box" style="background: #fff4cd;">
+                                <div>Biomass Generator</div>
+                            </div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-arrow">↓</div>
+                            <div class="diagram-arrow">↓</div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-box" style="background: #d4f7d4;">
+                                <div>Battery Bank</div>
+                                <div>& Inverter</div>
+                            </div>
+                            <div class="diagram-box" style="background: #d4f7d4;">
+                                <div>Main AC Busbar</div>
+                            </div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-arrow">↓</div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-box" style="background: #ffd4d4;">
+                                <div>Microgrid Controller</div>
+                            </div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-arrow">↓</div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-box" style="background: #e6d4ff;">
+                                <div>Local Distribution</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2><i class="fas fa-file-alt"></i> Explanation</h2>
+                <div class="explanation">
+                    <p><span class="highlight">Source of energy:</span> This advanced hybrid system integrates three complementary renewable sources to create a robust energy solution. Solar PV panels capture abundant sunlight during daylight hours, converting solar radiation directly into electricity. Wind turbines harness kinetic energy from air movement, which often complements solar generation by producing more power during nighttime or cloudy conditions. Biomass, derived from agricultural residues, forestry waste, or dedicated energy crops, serves as a controllable baseload source available regardless of weather conditions. This tri-source approach ensures continuous power availability while maximizing the use of locally available resources, reducing transportation costs and enhancing energy security for remote communities.</p>
+                    
+                    <p><span class="highlight">Conversion process:</span> Solar panels employ photovoltaic cells to convert sunlight directly into DC electricity, with modern panels achieving efficiencies of 18-22%. Wind turbines utilize aerodynamic blades to capture wind energy, spinning generators that typically produce AC electricity, which is then rectified to DC for battery charging. The biomass component involves thermochemical conversion processes - primarily combustion or gasification - where organic material is processed to produce heat, which generates steam to drive turbines connected to generators. Advanced systems may incorporate combined heat and power (CHP) configurations to maximize efficiency. All energy sources converge at a central power conditioning unit where sophisticated inverters convert DC to stable AC power, while smart charge controllers optimize battery charging cycles and protect against overcharging or deep discharge.</p>
+                    
+                    <p><span class="highlight">Output/utilization:</span> An intelligent microgrid controller acts as the system's brain, continuously monitoring energy production, consumption patterns, and battery state of charge. This controller dynamically optimizes power flow between sources, prioritizing renewable generation while strategically dispatching the biomass generator during periods of high demand or low renewable output. The system provides reliable electricity for residential needs, community infrastructure (health clinics, schools, community centers), small-scale commercial enterprises, and critical services like water purification and telecommunications. Excess energy can be directed to productive uses such as agricultural processing, refrigeration for food preservation, or charging stations for electric vehicles, creating additional economic value for the community.</p>
+                    
+                    <p><span class="highlight">Real-world application relevance:</span> This hybrid design represents a paradigm shift in rural electrification, ensuring complete energy independence for remote communities by effectively mitigating the intermittency challenges of individual renewable sources. Similar systems have been successfully deployed in villages across India, Africa, and Southeast Asia, demonstrating remarkable improvements in quality of life, educational outcomes, and economic opportunities. Beyond energy access, these systems foster circular economies by converting local agricultural and forestry waste into valuable energy, reducing open burning and its associated health impacts. The modular nature allows for gradual expansion as community needs grow, while creating local technical jobs in system operation and maintenance. These microgrids also enhance community resilience to climate change and external disruptions, providing a sustainable development pathway that aligns with multiple UN Sustainable Development Goals while reducing carbon emissions and environmental degradation.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activity 3: OTEC System -->
+        <section id="activity3" class="section">
+            <div class="section-header">
+                <h1>Ocean Thermal Energy Conversion (OTEC)</h1>
+                <p>Leveraging ocean temperature gradients for electricity and freshwater production</p>
+            </div>
+            
+            <!-- Problem Statement for Activity 3 -->
+            <div class="activity-problem">
+                <h3><i class="fas fa-clipboard-list"></i> Problem Statement</h3>
+                <p>Develop the block diagram of an Ocean Thermal Energy Conversion (OTEC) system for electricity production and freshwater generation. The solution should include a block diagram and detailed explanation covering the source of energy, conversion process, output/utilization, and real-world application relevance.</p>
+            </div>
+            
+            <div class="content-card">
+                <h2><i class="fas fa-project-diagram"></i> System Architecture</h2>
+                <div class="diagram-container">
+                    <div class="diagram">
+                        <div class="diagram-row">
+                            <div class="diagram-box" style="background: #cde4ff;">
+                                <div>Warm Surface Water</div>
+                                <div>(25-30°C)</div>
+                            </div>
+                            <div class="diagram-box" style="background: #cde4ff;">
+                                <div>Cold Deep Water</div>
+                                <div>(4-5°C)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-arrow">↓</div>
+                            <div class="diagram-arrow">↓</div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-box" style="background: #fff4cd;">
+                                <div>Evaporator</div>
+                                <div>(Vaporizes Ammonia)</div>
+                            </div>
+                            <div class="diagram-box" style="background: #fff4cd;">
+                                <div>Condenser</div>
+                                <div>(Condenses Ammonia)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-arrow">↓</div>
+                            <div class="diagram-arrow">↓</div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-box" style="background: #d4f7d4;">
+                                <div>Turbine & Generator</div>
+                                <div>(Produces Electricity)</div>
+                            </div>
+                            <div class="diagram-box" style="background: #d4f7d4;">
+                                <div>Freshwater Generator</div>
+                                <div>(Produces Drinking Water)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-arrow">↓</div>
+                            <div class="diagram-arrow">↓</div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-box" style="background: #ffd4d4;">
+                                <div>Local Grid</div>
+                            </div>
+                            <div class="diagram-box" style="background: #ffd4d4;">
+                                <div>Drinking Water Supply</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2><i class="fas fa-file-alt"></i> Explanation</h2>
+                <div class="explanation">
+                    <p><span class="highlight">Source of energy:</span> OTEC represents one of the most innovative approaches to renewable energy, harnessing the vast solar energy stored in tropical oceans as a temperature gradient between warm surface waters (typically 25-30°C) and cold deep waters (approximately 4-5°C) pumped from depths of 800-1000 meters. This temperature difference, which remains remarkably constant throughout the year in tropical regions, represents an enormous untapped energy resource estimated at potentially 10,000 times humanity's current energy consumption. A minimum temperature differential of 20°C is required for efficient operation, making tropical coastal areas and islands the ideal locations. Unlike intermittent renewables, OTEC provides baseload power 24/7/365, as the ocean's thermal layers remain stable regardless of weather conditions or time of day.</p>
+                    
+                    <p><span class="highlight">Conversion process:</span> In the most common closed-cycle OTEC configuration, warm surface seawater is pumped through a heat exchanger (evaporator) where it transfers thermal energy to a working fluid with a low boiling point, typically ammonia or a refrigerant. This causes the working fluid to vaporize into high-pressure gas. The expanding vapor drives a turbine connected to a generator, producing electricity. The depleted vapor then flows to a condenser, where cold deep seawater cools it back into liquid form. The liquid working fluid is pumped back to the evaporator, completing the Rankine cycle. Open-cycle systems use the seawater itself as the working fluid, creating low-pressure steam through flash evaporation, while hybrid systems combine elements of both approaches. The efficiency of OTEC systems, while relatively low (3-7%), is offset by the massive scale of available thermal resources and the valuable co-products generated.</p>
+                    
+                    <p><span class="highlight">Output/utilization:</span> The primary output is continuous, stable electricity that can be fed directly into local grids or used for specific applications like hydrogen production through electrolysis. A particularly valuable co-product is high-quality freshwater, generated either through surface condensation on the cold condenser pipes in closed-cycle systems or through the distillation process in open-cycle configurations. This addresses the critical water scarcity challenges faced by many island and coastal communities. Additionally, the nutrient-rich cold deep water outflow can support mariculture operations for high-value species like lobster, abalone, or seaweed, creating additional revenue streams. The cold water can also be used for sophisticated air conditioning systems, reducing the community's overall energy demand, while the warm water discharge may support aquaculture of tropical species or even facilitate mineral extraction processes.</p>
+                    
+                    <p><span class="highlight">Real-world application relevance:</span> OTEC technology holds transformative potential for tropical island nations and coastal regions with deep water access, offering a path to energy and water independence while reducing reliance on expensive imported fossil fuels. The Makai Ocean Engineering plant in Hawaii, connected to the grid since 2015, demonstrates the technical and economic viability of shore-based OTEC systems. Floating OTEC platforms, currently in advanced development stages, could eventually provide utility-scale power while supporting various blue economy activities. For small island developing states, OTEC represents not just an energy solution but a comprehensive development tool that addresses multiple challenges simultaneously - providing clean power, freshwater, food security through mariculture, and economic diversification. As climate change intensifies, OTEC's climate-independent nature and potential for carbon-negative operation through integrated algae cultivation make it an increasingly attractive option for sustainable development in vulnerable coastal regions worldwide.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer">
+            <p>Renewable Energy Projects Portfolio | Designed for Educational Purposes</p>
+        </div>
+    </div>
+
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('.section');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    
+                    // Update active nav item
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show target section
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
